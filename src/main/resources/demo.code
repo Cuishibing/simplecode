@@ -1,0 +1,35 @@
+class_map 'String' 'java.lang.String';
+
+external_class HahaService 'cui.shibing.simplecode.HahaService';
+
+
+dto Person
+    String name,
+    Integer age,
+    String school
+;
+
+dto PersonDto same Person;
+
+class DtoHelper
+    method_dto_convert Person PersonDto,
+    method_dto_convert PersonDto Person
+;
+
+class PersonDao
+    autowired HahaService hahaService,
+    method PersonDto findPersonByName(String name)
+;
+
+basedir 'c:/Users/cuishibing/Workspace/simplecode';
+package 'cui.shibing.simplecode.test';
+
+gen_package 'model'
+    gen Person,
+    gen PersonDto
+;
+
+gen_package 'dao'
+    gen DtoHelper,
+    gen PersonDao
+;
