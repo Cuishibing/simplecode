@@ -9,36 +9,46 @@ import java.util.LinkedList;
 
 public class SimpleCodeParser {
 
-    private final InputStream sourceStream;
-
-    private final Deque<String> loadedToken = new LinkedList<>();
+    private final Deque<String> loadedWords = new LinkedList<>();
 
     private final BufferedReader reader;
 
     public SimpleCodeParser(InputStream sourceStream) {
-        this.sourceStream = sourceStream;
         this.reader = new BufferedReader(new InputStreamReader(sourceStream));
     }
 
-    public String getToken() {
-        if (loadedToken.size() <= 0) {
+    public void close() {
+        try {
+            reader.close();
+        } catch (IOException e) {
+            // ignore
+        }
+    }
+
+    public Token getToken() {
+        if (loadedWords.size() <= 0) {
             try {
-                getTokenFromInput();
+                getWord();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        if (loadedToken.size() <= 0) {
-            return "";
+        if (loadedWords.size() <= 0) {
+            return null;
         }
-        return loadedToken.removeFirst();
+        String word = loadedWords.removeFirst();
+
+        return Token.parseToken(word);
     }
 
-    public void backToken(String token) {
-        loadedToken.addFirst(token);
+    public void backToken(Token t) {
+        if (t == null) {
+            return;
+        }
+        loadedWords.addFirst(t.getValue());
     }
 
-    private void getTokenFromInput() throws IOException {
+    private void getWord() throws IOException {
         StringBuilder tokenBuilder = new StringBuilder();
         int read;
         while ((read = reader.read()) > -1) {
@@ -50,9 +60,9 @@ public class SimpleCodeParser {
                 case '{':
                 case '}': {
                     if (tokenBuilder.length() > 0) {
-                        loadedToken.addLast(tokenBuilder.toString());
+                        loadedWords.addLast(tokenBuilder.toString());
                     }
-                    loadedToken.addLast(String.valueOf((char) read));
+                    loadedWords.addLast(String.valueOf((char) read));
                     return;
                 }
 
@@ -60,7 +70,7 @@ public class SimpleCodeParser {
                 case '\r':
                 case '\n': {
                     if (tokenBuilder.length() > 0) {
-                        loadedToken.addLast(tokenBuilder.toString());
+                        loadedWords.addLast(tokenBuilder.toString());
                         return;
                     }
                 }
@@ -74,8 +84,7 @@ public class SimpleCodeParser {
 
         }
         if (tokenBuilder.length() > 0) {
-            loadedToken.addLast(tokenBuilder.toString());
+            loadedWords.addLast(tokenBuilder.toString());
         }
     }
-
 }

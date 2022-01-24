@@ -1,0 +1,21 @@
+@startuml
+
+[*] --> c : c
+c --> cl : l
+cl --> cla : a
+cla --> clas : s
+clas --> class : s
+class --> [*] : ' ',\\r,\\n
+
+class --> identifier : [a-zA-Z]
+identifier --> identifier : [a-zA-Z]
+identifier --> [*] : ' ',\\r,\\n
+
+[*] --> d : d
+d --> dt : t
+dt --> dto : o
+dto --> [*] : ' ',\\r,\\n
+dto --> identifier : [a-zA-Z]
+
+
+@enduml

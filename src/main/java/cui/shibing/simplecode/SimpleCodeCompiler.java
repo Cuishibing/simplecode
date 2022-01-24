@@ -10,18 +10,4 @@ public class SimpleCodeCompiler {
         this.parser = parser;
     }
 
-    public Command compile() {
-        String token;
-        switch ((token = parser.getToken())) {
-            case "dto": {
-                DtoCommand command = new DtoCommand();
-                String dtoName = parser.getToken();
-                command.addOperand();
-            }
-            break;
-            case "class": {
-            }
-            break;
-        }
-    }
 }

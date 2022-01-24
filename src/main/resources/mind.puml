@@ -1,0 +1,23 @@
+
+@startmindmap
+
++ SimpleCode语言
+
+++ 类型系统
++++ 类
++++ 方法
+
+++ 运算符
++++ =
+++++ 两个类型之间赋值
+++++ 两个方法之间赋值
+
+++ 关键字
++++ dto
++++ class
++++ method
++++ autowired
++++ converter
++++ gen
+
+@endmindmap
